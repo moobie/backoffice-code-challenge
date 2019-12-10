@@ -5,12 +5,17 @@ Um dos pilares da nossa operação é o rigoroso processo de aprovação de usu�
 
 Sua missão nesse desafio é **automatizar o processo de aprovação de usuários** para conseguirmos escalar a operação da moObie! Mas não se desespere, nós já temos a base do serviço e todos os requisitos necessários, como você verá abaixo.
 
+
+
 ## Prerequisitos
  - `node.js`: de preferência versão 10.12.0 ou posterior
  - `git`: para clonar o repositório e fazer os commits
 
 ## Projeto
-Esse projeto contém a implementação base do serviço responsável pela aprovação de usuários, entretanto, no estado atual todos os usuários estão sendo **reprovados**! :scream:   
+O fluxo de aprovação inicia com o evento `newUser` que trás os dados inseridos no app pelo usuário. Em seguida precisamos executar uma série de validações e consultas como especificado nas tarefas abaixo. Caso o usuário não passe em alguma validação ele deve ser **rejeitado**, mas se esse passar por todas deverá ser **aprovado**.
+
+Esse projeto contém a implementação base do serviço responsável pela aprovação de usuários, entretanto, no estado atual todos os usuários estão sendo **reprovados**! :scream:
+
 Nele você encontrará os seguintes diretórios:
 
  - `events`: 
@@ -23,38 +28,108 @@ Sinta-se a vontade para criar diretórios e arquivos como achar melhor. Esperamo
 
 A utilização de pacotes públicos é permitida. 
 
+O arquivo `index.js` na raiz do projeto contém inicialização das dependências e emite uma série de eventos de `newUser` com dados para serem validados. **Esse arquivo não deve ser modificado.**
+
 Para iniciar o fluxo de aprovação basta rodar o comando  `npm start` ou `node index.js` na raiz do projeto, caso não tenha um gerenciador de pacotes do node instalado.
 
 ## Submissão
-Após clonar o repositório, resolva as tarefas em ordem crescente e faça commits pelo menos uma vez a cada tarefa. Ao final, envie seu projeto compactado (**não esqueça o .git**)
+Após clonar o repositório, resolva as tarefas em ordem crescente e faça commits pelo menos uma vez a cada tarefa.
+
+Submeta sua solução independente de ter conseguido terminar todas as tarefas ou alcançado todos os requisitos.
+
+Ao final, envie seu projeto compactado **(não esqueça o .git)**.
 
 ## Tarefas
  ### 1. Novo usuário cadastrado:
- Primeiramente, precisamos que você persista os dados de produto desse usuário. Não esqueça de criar sua solução utilizando a classe `/repository/InMemoryDb.js` para persistência. Além disso, precisamos que você adicione a seguinte lógica para aprovação:
+
+ Primeiramente, precisamos que você persista os dados de produto dos usuários recebidos nos eventos `newUser`. Não esqueça de criar sua solução utilizando a classe `/repository/InMemoryDb.js` para persistência. 
+
+ ```js
+//Payload do evento "newUser"
+{
+	userId: '00001',
+	fullName: 'João da Silva',
+	cnhPictureUrl: 'cnhPicture-00001',
+	profilePictureUrl: 'profilePicture-00001'
+}
+```
+ 
+ Além disso, precisamos que você adicione a primeira regra para aprovação:
 - `Usuários com mais de 18 anos`
 
  ### 2. Dados da CNH:
- Nessa tarefa, você precisa requisitar uma nova consulta do fornecedor de OCR utilizando os métodos disponíveis em `/events/publishers/index.js`. Em seguida, precisamos persistir o retorno dessa consulta. Por fim, adicionar as seguintes condições para aprovação:
-- `Condição 1` Categoria CNH
-- `Condição 2` CNH não vencida
-- `Condição 3`
+
+ Nessa tarefa, você precisa requisitar novas consultas do fornecedor de OCR utilizando o método disponível em `/events/publishers/index.js`. 
+ 
+ ```js
+//Payload do evento "cnhOcr"
+{
+	userId: '00001', 
+	cnhPictureUrl: 'cnh-00001',
+	cnhFullName: 'João da Silva',
+	cnhCategory: 'B',
+	cnhNumber: '00000000001', 
+	cnhExpiryDate: '2019-12-06T20:36:48.885Z', 
+	cnhProfilePictureUrl: 'cnhProfilePicture-00001'
+}
+```
+
+ Em seguida, precisamos persistir os retornos dessas consultas. 
+ 
+ Por fim, adicionar as seguintes condições para aprovação:
+- `Categoria da CNH diferente de 'A'`
+- `Data de vencimento da CNH menor que a data atual`
+- `Nome da CNH bate com o fornecido no produto`
 
  ### 3. Restrições:
- Assim como na tarefa anterior, precisamos que você requisite uma nova consulta, mas do fornecedor de restrições da CNH, e a persista no serviço. Entretanto, por ser uma consulta mais barata do que a do OCR, precisamos que ela seja feita antes da consulta implementada anteriormente.
- Também gostariamos que fosse possível saber, através dos campos persistidos, quais validações foram feitas para um determinado cadastro.
+
+ Assim como na tarefa anterior, precisamos que você requisite uma nova consulta, mas do fornecedor de restrições da CNH, e a persista no serviço. 
+
+ ```js
+//Payload do evento "cnhRestrictions"
+{
+	userId: '00001',
+	cnhNumber: '00000000001',
+	score: '20', 
+	hasRestriction: true
+}
+```
+
  Além disso, adicionar as seguintes condições para aprovação:
-- `Condição 1` Pontuação
-- `Condição 2` Tem restrição
-- `Condição 3`
+- `Pontuação da CNH menor do que 21 pontos` 
+- `Não ter restrição`
 
 ### 4. Reconhecimento facial:
-Por fim, utilizando os dados dos fornecedores anteriores, precisamos requisitar uma consulta de reconhecimento facial e persisti-la. Nessa etapas, esperamos um código que seja modularizado, e permita a mudança nas ordems das consultas, mas respeitando possíveis pre-requisitos.
 
-- `Condição 3` Pictures match
+Por fim, utilizando os dados dos fornecedores anteriores, precisamos requisitar uma consulta de reconhecimento facial e persisti-la.
 
+```js
+//Payload do evento "faceRecognition"
+{
+	userId: '00001', 
+	profilePictureUrl: 'profilePicture-00001', 
+	cnhProfilePictureUrl: 'cnhProfilePicture-00001',
+	picturesMatch: true
+}
+```
 
-//Reescrever tarefa 3: mais clara as espectativas, e não mudar a ordem
-//Melhorar o contexto do que o teste faz 
-//Colocar restrições e requisitos de negócio no final (fora da tarefa - Bonus): Mudança de ordem, SLA por validação e para aprovação ou reprovação, 
-//Tirar pasta domain, e descrever payload dos eventos
-//Submeter independente de ter alcançado requisitos 
+Para finalizar, precisamos adicionar a condição de aprovação:
+- `Fotos de perfil e perfil da CNH são da mesma pessoa`
+
+### Bonus
+
+Caso tenha conseguido terminar todas as tarefas anteriores, vamos deixar algumas perguntas que gostariamos de conseguir responder com base nos valores persistidos nas suas soluções:
+
+- `Taxa de aprovação`
+
+- `Quais validações foram executadas para um determinado cadastro`
+
+- `SLA (tempo de duração entre a requisição e o fim da validação) de cada etapa`
+
+- `SLA (tempo de duração entre a requisição e o fim da validação) de aprovação e reprovação`
+
+Além disso, deixamos abaixo alguns pontos que gostariamos de encontrar na sua solução final:
+
+- `Possibilidade de executar uma requisição e validação do fluxo de aprovação sem desencadear as demais`
+
+- `Facilidade em mudar a ordem, adicionar e remover as requisições e validações, respeitando possíveis pre-requisitos de requisições`

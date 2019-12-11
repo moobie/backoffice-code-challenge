@@ -10,7 +10,7 @@ Sua missão nesse desafio é **automatizar o processo de aprovação de usuário
  - `git`: para clonar o repositório e fazer os commits
 
 ## Projeto
-O fluxo de aprovação inicia com o evento `newUser` que trás os dados inseridos no app pelo usuário. Em seguida precisamos executar uma série de validações e consultas como especificado nas tarefas abaixo. Caso o usuário não passe em alguma validação ele deve ser **rejeitado**, mas se esse passar por todas deverá ser **aprovado**.
+O fluxo de aprovação inicia com o evento `newUser` que trás os dados inseridos no app pelo usuário. Em seguida precisamos executar uma série de validações e consultas como especificado nas tarefas abaixo. Caso o usuário não passe em alguma validação ele deve ser **rejeitado** com um motivo de reprovação correspondente, mas se esse passar por todas deverá ser **aprovado**.
 
 Esse projeto contém a implementação base do serviço responsável pela aprovação de usuários, entretanto, no estado atual todos os usuários estão sendo **reprovados**! :scream:
 
@@ -120,6 +120,8 @@ Para finalizar, precisamos adicionar a condição de aprovação:
 Caso tenha conseguido terminar todas as tarefas anteriores, vamos deixar algumas perguntas que gostariamos de conseguir responder com base nos valores persistidos nas suas soluções:
 
 - `Taxa de aprovação`
+
+- `Quais validações possuem a maior taxa de reprovação`
 
 - `Quais validações foram executadas para um determinado cadastro`
 

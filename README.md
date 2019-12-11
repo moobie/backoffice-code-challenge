@@ -46,11 +46,11 @@ Ao final, envie seu projeto compactado **(não esqueça o .git)**.
 
  ```js
 //Payload do evento "newUser"
-{
+{ 
 	userId: '00001',
-	fullName: 'João da Silva',
-	cnhPictureUrl: 'cnhPicture-00001',
-	profilePictureUrl: 'profilePicture-00001'
+	fullName: 'SILVA DANILO',
+    cnhPictureUrl: 'cnhPicture-00001',
+	profilePictureUrl: 'https://image-service.moobie.com.br/api/v1/images/profilePicture-00001' 
 }
 ```
  
@@ -63,14 +63,14 @@ Ao final, envie seu projeto compactado **(não esqueça o .git)**.
  
  ```js
 //Payload do evento "cnhOcr"
-{
-	userId: '00001', 
-	cnhPictureUrl: 'cnh-00001',
-	cnhFullName: 'João da Silva',
-	cnhCategory: 'B',
-	cnhNumber: '00000000001', 
-	cnhExpiryDate: '2019-12-06T20:36:48.885Z', 
-	cnhProfilePictureUrl: 'cnhProfilePicture-00001'
+{ 
+  userId: '00001',
+  cnhPictureUrl: 'cnhPicture-00001',
+  cnhFullName: 'Silva Danilo',
+  cnhCategory: 'B',
+  cnhNumber: '000000000001',
+  cnhExpiryDate: '3000-01-01T02:00:00.000Z',
+  cnhProfilePictureUrl: 'https://image-service.moobie.com.br/api/v1/images/cnhProfilePicture-00001' 
 }
 ```
 
@@ -87,11 +87,11 @@ Ao final, envie seu projeto compactado **(não esqueça o .git)**.
 
  ```js
 //Payload do evento "cnhRestrictions"
-{
+{ 
 	userId: '00001',
-	cnhNumber: '00000000001',
-	score: '20', 
-	hasRestriction: true
+    cnhNumber: '000000000001',
+    score: '29',
+	hasRestriction: false 
 }
 ```
 
@@ -107,8 +107,8 @@ Por fim, utilizando os dados dos fornecedores anteriores, precisamos requisitar 
 //Payload do evento "faceRecognition"
 {
 	userId: '00001', 
-	profilePictureUrl: 'profilePicture-00001', 
-	cnhProfilePictureUrl: 'cnhProfilePicture-00001',
+	profilePictureUrl: 'https://image-service.moobie.com.br/api/v1/images/profilePicture-00001', 
+	cnhProfilePictureUrl: 'https://image-service.moobie.com.br/api/v1/images/cnhProfilePicture-00001',
 	picturesMatch: true
 }
 ```

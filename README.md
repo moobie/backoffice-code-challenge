@@ -48,7 +48,8 @@ Ao final, envie seu projeto compactado **(não esqueça o .git)**.
 	userId: '00001',
 	fullName: 'SILVA DANILO',
     cnhPictureUrl: 'cnhPicture-00001',
-	profilePictureUrl: 'https://image-service.moobie.com.br/api/v1/images/profilePicture-00001' 
+	profilePictureUrl: 'https://image-service.moobie.com.br/api/v1/images/profilePicture-00001',
+	birthDate: '1990-06-20T21:50:26.030Z'
 }
 ```
  

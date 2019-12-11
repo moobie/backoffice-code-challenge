@@ -3,9 +3,7 @@
 # Desafio Backend Backoffice !
 Um dos pilares da nossa operação é o rigoroso processo de aprovação de usuários na nossa plataforma. Nele, precisamos garantir que um cadastro não representa uma possível fraude de identidade, e para tanto, consultamos uma série de fornecedores e checamos o máximo de informações disponíveis para aprová-lo.
 
-Sua missão nesse desafio é **automatizar o processo de aprovação de usuários** para conseguirmos escalar a operação da moObie! Mas não se desespere, nós já temos a base do serviço e todos os requisitos necessários, como você verá abaixo.
-
-
+Sua missão nesse desafio é **automatizar o processo de aprovação de usuários** para conseguirmos escalar a operação da moObie; só que num escopo reduzido para caber nesse teste! Então não se desespere, nós já temos a base do serviço e todos os requisitos necessários, como você verá abaixo.
 
 ## Prerequisitos
  - `node.js`: de preferência versão 10.12.0 ou posterior
